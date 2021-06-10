@@ -1,24 +1,23 @@
 variable "storage_account_name" {
     type=string
-    #default="appstore50001"
+    default="saatinjune6729021345"
 }
 
 variable "network_name" {
     type=string
-    #default="staging"
+    default="vmtf"
 }
 
 variable "vm_name" {
     type=string
-    #default="stagingvm"
+    default="vmbyterraform"
 }
 
 provider "azurerm"{
 version = "=2.0"
-#subscription_id = "20c6eec9-2d80-4700-b0f6-4fde579a8783"
-#tenant_id       = "5f5f1c90-abac-4ebe-88d7-0f3d121f967e"
 features {}
 }
+
 
 resource "azurerm_virtual_network" "staging" {
   name                = var.network_name
