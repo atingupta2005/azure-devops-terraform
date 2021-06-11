@@ -19,26 +19,14 @@ resource "random_string" "rsrg" {
   special = false
 }
 
-
-variable "storage_account_name" {
-    type=string
-    default="${random_string.rssa.result}"
-}
-
-variable "resource_group_name" {
-    type=string
-    default="${random_string.rsrg.result}"
-}
-
-
 resource "azurerm_resource_group" "grp" {
-  name     = "terraform_grp"
+  name     = "${random_string.rsrg.result}"
   location = "North Europe"
 }
 
 
 resource "azurerm_storage_account" "store" {
-  name                     = var.storage_account_name
+  name                     = "${random_string.rssa.result}"
   resource_group_name      = azurerm_resource_group.grp.name
   location                 = azurerm_resource_group.grp.location
   account_tier             = "Standard"
