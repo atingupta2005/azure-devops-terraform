@@ -1,11 +1,46 @@
 provider "azurerm"{
 version = "=2.0"
-#subscription_id = "20c6eec9-2d80-4700-b0f6-4fde579a8783"
-#tenant_id       = "5f5f1c90-abac-4ebe-88d7-0f3d121f967e"
 features {}
 }
 
-resource "azurerm_resource_group" "terraform_grp" {
+resource "random_string" "rssa" {
+  length  = 16
+  upper   = false
+  lower   = true
+  number  = true
+  special = false
+}
+
+resource "random_string" "rsrg" {
+  length  = 16
+  upper   = false
+  lower   = true
+  number  = true
+  special = false
+}
+
+
+variable "storage_account_name" {
+    type=string
+    default="${random_string.rssa.result}"
+}
+
+variable "resource_group_name" {
+    type=string
+    default="${random_string.rsrg.result}"
+}
+
+
+resource "azurerm_resource_group" "grp" {
   name     = "terraform_grp"
   location = "North Europe"
+}
+
+
+resource "azurerm_storage_account" "store" {
+  name                     = var.storage_account_name
+  resource_group_name      = azurerm_resource_group.grp.name
+  location                 = azurerm_resource_group.grp.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
 }
